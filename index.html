@@ -20,15 +20,15 @@ body{background:var(--bg);background-image:linear-gradient(rgba(242,241,238,0.04
 .hero h1{font:900 clamp(2.4rem,7vw,5.5rem)/0.9 Archivo,'Arial Black',sans-serif;text-transform:uppercase;letter-spacing:-0.065em;color:var(--text)}
 .hero h1 .ac{color:var(--blue)}
 .hero .sub{font:500 clamp(0.85rem,1.2vw,1.1rem)/1.4 Inter,system-ui,sans-serif;color:var(--text-dim);margin-top:clamp(8px,0.6vw,12px)}
-.lbar{display:flex;justify-content:center;gap:clamp(8px,1.5vw,24px);flex-wrap:wrap;padding:clamp(10px,1vw,18px);margin:clamp(8px,0.8vw,12px) 0 clamp(12px,1.2vw,20px);border:1px solid var(--border)}
+.lbar{display:flex;justify-content:center;gap:clamp(8px,1.5vw,24px);flex-wrap:wrap;padding:clamp(10px,1vw,18px);margin:clamp(8px,0.8vw,12px) 0;border:1px solid var(--border)}
 .lbar span{display:inline-flex;align-items:center;gap:6px;font:600 10px/1 'Courier New',monospace;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-dim)}
 .lbar .sw{display:inline-block;width:10px;height:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid var(--border);background:var(--border)}
 .grid .spn{grid-column:1/-1}
 .sec{background:var(--surface);padding:clamp(12px,1.2vw,24px);transition:border-color .25s,background .25s,transform .25s}
 .sec:hover{border-color:var(--blue);background:var(--blue-tint);transform:translateY(-2px);z-index:2}
-.sec .idx{font:700 11px/1 'Courier New',monospace;color:var(--blue);letter-spacing:0.16em;margin-bottom:clamp(4px,0.3vw,8px)}
-.sec .lt{font:800 clamp(0.7rem,0.9vw,0.95rem)/1.15 Archivo,'Arial Black',sans-serif;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:clamp(6px,0.5vw,10px);color:var(--text)}
+.sec .idx{font:700 11px/1 'Courier New',monospace;color:var(--blue);letter-spacing:0.16em;margin-bottom:4px}
+.sec .lt{font:800 clamp(0.7rem,0.9vw,0.95rem)/1.15 Archivo,'Arial Black',sans-serif;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:6px;color:var(--text)}
 .sec .lt .sb{font:600 9px/1 'Courier New',monospace;color:var(--text-dim);letter-spacing:0.12em;text-transform:none}
 .kb{display:flex;justify-content:center;gap:clamp(6px,0.8vw,16px)}
 .hf{display:flex;flex-direction:column}
@@ -45,21 +45,17 @@ body{background:var(--bg);background-image:linear-gradient(rgba(242,241,238,0.04
 .key.sm.l3{font-size:clamp(0.24rem,0.24vw,0.3rem)}
 .ab{position:absolute;top:0;left:0;right:0;height:2px}
 .key.sm .ab{height:1.5px}
-.ab.bar-base{background:var(--bar-base)}
-.ab.bar-nav{background:var(--bar-nav)}
-.ab.bar-num{background:var(--bar-num)}
-.ab.bar-win{background:var(--bar-win)}
-.ab.bar-bro{background:var(--bar-bro)}
+.ab.bar-base{background:var(--bar-base)}.ab.bar-nav{background:var(--bar-nav)}.ab.bar-num{background:var(--bar-num)}.ab.bar-win{background:var(--bar-win)}.ab.bar-bro{background:var(--bar-bro)}
 .key.trns{color:var(--text-muted);border-color:rgba(242,241,238,0.06);background:transparent;opacity:0.45}
 .key.trns .ab{display:none}
 .lbl{padding:0 1px;word-break:break-word}
-.ftr{margin-top:clamp(16px,2vw,32px);border-top:1px solid var(--border);padding:clamp(12px,1.2vw,24px) 0;display:flex;justify-content:space-between;flex-wrap:wrap;font:600 10px/1.6 'Courier New',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)}
+.ftr{margin-top:clamp(16px,2vw,32px);border-top:1px solid var(--border);padding:clamp(12px,1.2vw,24px) 0;display:flex;justify-content:space-between;flex-wrap:wrap;font:600 10px/1.6 'Courier New',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);gap:4px}
 .ftr b{color:var(--text)}
 .rlr{position:fixed;right:0;top:0;width:clamp(24px,4vw,60px);height:100vh;border-left:1px solid var(--border);pointer-events:none;z-index:50}
 .rlr .fl{position:absolute;top:0;left:-1px;width:3px;background:var(--blue);box-shadow:0 0 10px var(--blue);transition:height .1s linear}
-.rlr .tk{position:absolute;right:clamp(4px,0.6vw,10px);font:600 8px/1 'Courier New',monospace;color:var(--text-muted)}
+.rlr .tk{position:absolute;right:4px;font:600 8px/1 'Courier New',monospace;color:var(--text-muted)}
 @media(max-width:768px){.grid{grid-template-columns:1fr}.hero h1{font-size:clamp(1.8rem,10vw,2.8rem)}body{padding-right:0}.rlr{display:none}.nav .mi{display:none}}
-@media(max-width:480px){.key{width:clamp(22px,9vw,32px);height:clamp(22px,9vw,32px)}.key.sm{width:clamp(16px,6vw,24px);height:clamp(16px,6vw,24px)}}
+@media(max-width:480px){.key{width:clamp(22px,9vw,32px)}.key.sm{width:clamp(16px,6vw,24px)}}
 </style>
 </head>
 <body>
@@ -74,21 +70,37 @@ body{background:var(--bg);background-image:linear-gradient(rgba(242,241,238,0.04
 <span><span class=sw style=background:var(--bar-bro)></span>Browser</span>
 </div></div>
 <div class=grid>
-<div class="sec spn"><div class=idx>01 · BASE</div><div class=lt>QWERTY <span class=sb>Default layer</span></div><div class=kb id=b></div></div>
-<div class=sec><div class=idx>02 · NAV</div><div class=lt>NAV + EDIT <span class=sb>HOLD L-THUMB 2</span></div><div class=kb id=nv></div></div>
-<div class=sec><div class=idx>03 · NUM</div><div class=lt>NUMBERS + SYMBOLS <span class=sb>HOLD L-THUMB 1</span></div><div class=kb id=nm></div></div>
-<div class=sec><div class=idx>04 · WIN</div><div class=lt>WINDOWS <span class=sb>TAP L-THUMB 2</span></div><div class=kb id=wn></div></div>
-<div class=sec><div class=idx>05 · BRO</div><div class=lt>BROWSER + MOUSE <span class=sb>TAP L-THUMB 1</span></div><div class=kb id=br></div></div>
+<div class="sec spn"><div class=idx>01 · BASE</div><div class=lt>QWERTY <span class=sb>Default</span></div><div class=kb id=b></div></div>
+<div class=sec><div class=idx>02 · NAV</div><div class=lt>NAV + EDIT <span class=sb>HOLD L-2</span></div><div class=kb id=nv></div></div>
+<div class=sec><div class=idx>03 · NUM</div><div class=lt>NUMBERS <span class=sb>HOLD L-1</span></div><div class=kb id=nm></div></div>
+<div class=sec><div class=idx>04 · WIN</div><div class=lt>WINDOWS <span class=sb>TAP L-2</span></div><div class=kb id=wn></div></div>
+<div class=sec><div class=idx>05 · BRO</div><div class=lt>BROWSER <span class=sb>TAP L-1</span></div><div class=kb id=br></div></div>
 </div>
 <div class=ftr>
 <span><b>·</b> transparent</span>
-<span><b>E<</b> vim hjkl</span>
 <span><b>Word</b> word jump</span>
-<span><b>Sticky</b> MOD tap then key</span>
-<span><b>Snap</b> snap half</span>
-<span><b>THUMB 1/2</b> hold / tap</span>
-<span><b>Knob</b> vol · track · wheel</span>
+<span><b>Sticky</b> MOD + key</span>
+<span><b>Snap</b> half</span>
+<span><b>THUMB</b> hold / tap</span>
+<span><b>Knob</b> vol</span>
 </div></div>
-</div>
+<script>
+var SL=[4,2,0,-1,-3],SS=[3,1,0,-1,-2],TL=[0,5,10],TS=[0,3,6];
+var D='·';
+var K={
+base:{a:'bar-base',l:[['Q','W','E','R','T'],['A','S','D','F','G'],['Z','X','C','V','B']],lt:['Enter','THUMB 1\nhold=Num\ntap=Browser','THUMB 2\nhold=Nav\ntap=Windows'],rt:['Shift','Space','Bksp'],r:[['Y','U','I','O','P'],['H','J','K','L',';'],['N','M',',','.','/']]},
+nav:{a:'bar-nav',l:[['Sticky\nWIN','Sticky\nCTRL','Sticky\nALT','Tab','Esc'],['Sel\nAll','Addr\nbar','Paste','Copy','Cut'],['Undo','Redo','Home','End','Sticky\nSHIFT']],lt:[D,D,D],rt:[D,D,D],r:[['Word\n<','PgDn','PgUp','Word\n>',D],['<','v','^','>',D],[D,'Del\nw','Delete',D,D]]},
+num:{a:'bar-num',l:[['1','2','3','4','5'],['F1','F2','F3','F4','F5\nRfr'],lt:[D,D,D],rt:[D,D,D],r:[['6','7','8','9','0'],['-','_','=','[',']'],['\\',"'",'`','Num\n-','Num\n+']]},
+win:{a:'bar-win',l:[['Cls\ntab','New\ntab','Next\ntab','Prev\ntab','Esc'],['Cls\ndesk','New\ndesk','Dsk\n>','Dsk\n<','Snip'],['Cls\nwin','New\nwin','Nxt\nwin','Prv\nwin','Tab']],lt:[D,D,'tap=Base\nhold=Nav'],rt:[D,D,D],r:[['Mon\n<','Un-\nstr','Str\nhgt','Mon\n>','Task'],['Snap\n<','Restore','Maxim','Snap\n>','Snap\nL'],['Proj','Show\ndsk','Reopn','Screen','Explr']]},
+bro:{a:'bar-bro',l:[[D,D,D,D,D],['Back','Fwd','F5\nRfr','Addr','Find'],[D,D,'Bookm','F11\nFull','Hist']],lt:[D,'tap=Base\nhold=Num',D],rt:[D,D,D],r:[['Whl\n<','Whl\nv','Whl\n^','Whl\n>',D],['Mse\n<','Mse\nv','Mse\n^','Mse\n>',D],[D,'L\nclk','R\nclk','M\nclk',D]]}
+};
+function k(e,s,a){var d=document.createElement('div');d.className='key'+(s?' '+s:'');var n=e.split('\n');if(n.length==2)d.classList.add('l2');else if(n.length>=3)d.classList.add('l3');if(e===D){d.classList.add('trns');d.textContent=D;return d;}var b=document.createElement('div');b.className='ab '+a;d.appendChild(b);var l=document.createElement('div');l.className='lbl';for(var i=0;i<n.length;i++){if(i>0)l.appendChild(document.createElement('br'));l.appendChild(document.createTextNode(n[i]));}d.appendChild(l);return d;}
+function R(id,v,sz){var c=document.getElementById(id),st=sz==='lg'?SL:SS,th=sz==='lg'?TL:TS,s=sz==='lg'?'':'sm';var h=document.createElement('div');h.className='hf lt';var m=document.createElement('div');m.className='mb'+(s?' '+s:'');for(var c2=0;c2<5;c2++){var cd=document.createElement('div');cd.className='cl'+(s?' '+s:'');cd.style.marginTop=st[c2]+'px';for(var r=0;r<3;r++)cd.appendChild(k(v.l[r][c2],s,v.a));m.appendChild(cd);}h.appendChild(m);var t=document.createElement('div');t.className='tc'+(s?' '+s:'');for(var i=0;i<3;i++){var k2=k(v.lt[2-i],s,v.a);k2.style.marginTop=th[2-i]+'px';t.appendChild(k2);}h.appendChild(t);c.appendChild(h);var h2=document.createElement('div');h2.className='hf rt';var m2=document.createElement('div');m2.className='mb'+(s?' '+s:'');for(var c3=0;c3<5;c3++){var cd2=document.createElement('div');cd2.className='cl'+(s?' '+s:'');cd2.style.marginTop=st[4-c3]+'px';for(var r2=0;r2<3;r2++)cd2.appendChild(k(v.r[r2][c3],s,v.a));m2.appendChild(cd2);}h2.appendChild(m2);var t2=document.createElement('div');t2.className='tc'+(s?' '+s:'');for(var j=0;j<3;j++){var k3=k(v.rt[j],s,v.a);k3.style.marginTop=th[j]+'px';t2.appendChild(k3);}h2.appendChild(t2);c.appendChild(h2);}
+R('b',K.base,'lg');R('nv',K.nav,'sm');R('nm',K.num,'sm');R('wn',K.win,'sm');R('br',K.bro,'sm');
+var rlr=document.getElementById('rlr'),fl=document.getElementById('fl');
+for(var i=0;i<=100;i+=5){var t=document.createElement('div');t.className='tk';t.style.top=i+'%';t.textContent=i%10===0?i+'%':'';rlr.appendChild(t);}
+function up(){var s=document.documentElement.scrollTop||document.body.scrollTop;var h=document.documentElement.scrollHeight-document.documentElement.clientHeight;fl.style.height=(Math.min(s/h,1)*100)+'vh';}
+window.addEventListener('scroll',up);up();
+</script>
 </body>
 </html>
