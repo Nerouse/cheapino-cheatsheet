@@ -1,2 +1,3 @@
 # cheapino-cheatsheet
-Cheapino v2 Nelson v3 interactive keymap reference — monochrome responsive cheat sheet
+
+Cheapino v2 V3 interactive keymap reference — monochrome responsive cheat sheet
