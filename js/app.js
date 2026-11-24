@@ -328,6 +328,7 @@ document.addEventListener('DOMContentLoaded', init);
       if (file !== APP.currentProfile) {
         loadProfile(APP.currentKeyboard, file);
         renderConfigs();
+        window.location.hash = 'keymap';
       }
     });
   });
@@ -338,8 +339,11 @@ document.addEventListener('DOMContentLoaded', init);
           if (code === -1 || code === 'KC_NO' || code === undefined || code === null)
             return '<div class="key empty"></div>';
           const dec = decodeKC(code);
-          let cls = 'key' + (dec.cls ? ' ' + dec.cls : '') + (c === 5 ? ' thumb' : '');
-          return `<div class="${cls}" title="${dec.kc || code}"><span class="label">${dec.label || '·'}</span></div>`;
+          let cls = 'key';
+          if (dec.cls) cls += ' ' + dec.cls;
+          if (!dec.label) cls += ' empty';
+          if (c === 5) cls += ' thumb';
+          return `<div class="${cls}" title="${dec.kc || code}"><span class="label">${dec.label || ''}</span></div>`;
         }).join('') + '</div>';
     }).filter(Boolean).join('');
   }
