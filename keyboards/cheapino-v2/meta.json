@@ -4,7 +4,7 @@
   "description": "34-key split mechanical keyboard",
   "layout": "split 3x5+3",
   "layers": 6,
-  "layers_named": ["BASE", "NUMBERS", "NAV/EDIT", "MOUSE", "FN4", "FN5"],
+  "layers_named": ["BASE", "LAYER 1", "LAYER 2", "LAYER 3", "LAYER 4", "LAYER 5"],
   "profiles": [
     { "file": "cheapino-v2-v3.vil", "name": "v2-v3 (Tap-Dance)", "desc": "Standard config with TG/MO tap-dance on thumb keys" },
     { "file": "cheapino-vial-mo.vil", "name": "vial-mo", "desc": "Momentary (MO) layer switching on thumb keys" },
