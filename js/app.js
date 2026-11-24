@@ -1,15 +1,5 @@
-/* ═══════════════════════════════════════════════
-   cheapino-cheatsheet — App Logic
-   ═══════════════════════════════════════════════ */
-const APP = {
-  basePath: '',
-  keyboards: [],
-  currentKeyboard: null,
-  currentProfile: null,
-  currentLayer: 0,
-  vilData: null,
-  metaMap: {},
-};
+/* cheapino-cheatsheet — App Logic */
+const APP = { basePath:'', keyboards:[], currentKeyboard:null, currentProfile:null, currentLayer:0, vilData:null, metaMap:{} };
 const KC_MAP = {
   'KC_A':'A','KC_B':'B','KC_C':'C','KC_D':'D','KC_E':'E','KC_F':'F',
   'KC_G':'G','KC_H':'H','KC_I':'I','KC_J':'J','KC_K':'K','KC_L':'L',
@@ -23,7 +13,7 @@ const KC_MAP = {
   'KC_LSHIFT':'⇧','KC_RSHIFT':'⇧','KC_LCTRL':'^','KC_RCTRL':'^',
   'KC_LALT':'Alt','KC_RALT':'Alt','KC_LGUI':'◆','KC_RGUI':'◆',
   'KC_MINUS':'-','KC_EQUAL':'=','KC_LBRACKET':'[','KC_RBRACKET':']',
-  'KC_BSLASH':'\\','KC_SCOLON':';','KC_QUOTE':'\'','KC_GRAVE':'`',
+  'KC_BSLASH':'\\','KC_SCOLON':';',"KC_QUOTE":"'",'KC_GRAVE':'`',
   'KC_COMMA':',','KC_DOT':'.','KC_SLASH':'/',
   'KC_LEFT':'←','KC_RIGHT':'→','KC_UP':'↑','KC_DOWN':'↓',
   'KC_HOME':'↖','KC_END':'↘','KC_PGUP':'⇞','KC_PGDOWN':'⇟',
@@ -44,48 +34,45 @@ const MOD_PREFIX = {
   'C_S(':'^⇧','LCG(':'^◆','SGUI(':'⇧◆','LCA(':'^Alt',
 };
 function decodeKC(code) {
-  if (!code || code === 'KC_NO') return { label: '', kc: '', cls: 'empty' };
+  if (!code || code === 'KC_NO') return { label:'', kc:'', cls:'empty' };
   let m = code.match(/^TD\((\d+)\)$/);
-  if (m) return { label: 'TD'+m[1], kc: code, cls: 'layer' };
+  if (m) return { label:'TD'+m[1], kc:code, cls:'layer' };
   m = code.match(/^MO\((\d+)\)$/);
-  if (m) return { label: 'MO'+m[1], kc: code, cls: 'layer' };
+  if (m) return { label:'MO'+m[1], kc:code, cls:'layer' };
   m = code.match(/^TG\((\d+)\)$/);
-  if (m) return { label: 'TG'+m[1], kc: code, cls: 'layer' };
+  if (m) return { label:'TG'+m[1], kc:code, cls:'layer' };
   m = code.match(/^TO\((\d+)\)$/);
-  if (m) return { label: 'TO'+m[1], kc: code, cls: 'layer' };
+  if (m) return { label:'TO'+m[1], kc:code, cls:'layer' };
   m = code.match(/^TT\((\d+)\)$/);
-  if (m) return { label: 'TT'+m[1], kc: code, cls: 'layer' };
-  for (const [prefix, modLabel] of Object.entries(MOD_PREFIX)) {
-    if (code.startsWith(prefix) && code.endsWith(')')) {
-      const inner = code.slice(prefix.length, -1);
+  if (m) return { label:'TT'+m[1], kc:code, cls:'layer' };
+  for (const [p, ml] of Object.entries(MOD_PREFIX)) {
+    if (code.startsWith(p) && code.endsWith(')')) {
+      const inner = code.slice(p.length,-1);
       const dec = decodeKC(inner);
-      if (dec.label) return { label: modLabel + dec.label, kc: code, cls: 'mod' };
+      if (dec.label) return { label:ml+dec.label, kc:code, cls:'mod' };
     }
   }
   if (code.startsWith('LSFT(') && code.endsWith(')')) {
-    const inner = code.slice(5, -1);
+    const inner = code.slice(5,-1);
     const dec = decodeKC(inner);
-    if (dec.label) return { label: '⇧'+dec.label, kc: code, cls: 'mod' };
+    if (dec.label) return { label:'⇧'+dec.label, kc:code, cls:'mod' };
   }
   if (KC_MAP[code] !== undefined) {
     const label = KC_MAP[code];
-    const isAlpha = /^[A-Z]$/.test(label);
-    const isTrans = code === 'KC_TRNS';
-    const isMod = code.includes('SHIFT')||code.includes('CTRL')||code.includes('ALT')||code.includes('GUI');
-    return { label, kc: code, cls: isTrans ? 'transparent' : isMod ? 'mod' : isAlpha ? 'alpha' : '' };
+    return { label, kc:code, cls: code==='KC_TRNS'?'transparent':/^[A-Z]$/.test(label)?'alpha':'' };
   }
-  return { label: code.replace(/^KC_/, '').slice(0,6), kc: code, cls: '' };
+  return { label:code.replace(/^KC_/,'').slice(0,6), kc:code, cls:'' };
 }
 
 function getLayerNames() {
-  const n = APP.vilData && APP.vilData.layout ? APP.vilData.layout.length : 6;
+  const n = (APP.vilData && APP.vilData.layout) ? APP.vilData.layout.length : 6;
   const meta = APP.metaMap[APP.currentKeyboard];
   let profile = null;
   if (meta) profile = meta.profiles.find(p => p.file === APP.currentProfile);
-  if (profile && profile.layers_named) return profile.layers_named.slice(0, n);
-  if (meta && meta.layers_named) return meta.layers_named.slice(0, n);
-  const defs = ['BASE','MOUSE','WIN','NUMBERS','NAV/EDIT','FN5','FN6','FN7','FN8','FN9'];
-  return defs.slice(0, n);
+  if (profile && profile.layers_named) return profile.layers_named.slice(0,n);
+  if (meta && meta.layers_named) return meta.layers_named.slice(0,n);
+  const defs = ['BASE','MOUSE','WIN','NUMBERS','NAV/EDIT','FN5','FN6','FN7'];
+  return defs.slice(0,n);
 }
 
 function initNav() {
@@ -113,16 +100,34 @@ async function loadKeyboards() {
     const meta = await resp.json();
     APP.metaMap['cheapino-v2'] = meta;
     APP.keyboards = ['cheapino-v2'];
+    APP.currentKeyboard = 'cheapino-v2';
+    APP.currentProfile = meta.profiles[0]?.file || null;
+    return meta;
+  } catch (e) { console.warn(e); return null; }
+}
+
+async function loadProfile(kb, file) {
+  try {
+    const resp = await fetch(APP.basePath + 'keyboards/' + kb + '/' + file);
+    const data = await resp.json();
+    APP.vilData = data;
+    APP.currentProfile = file;
+    APP.currentLayer = 0;
+    renderKeymap();
+    updateLayerTabs();
+  } catch (e) {
+    console.warn(e);
+    const el = document.getElementById('keymap-visual');
+    if (el) el.innerHTML = '<div class="empty-state"><p>Could not load: ' + file + '</p></div>';
+  }
+}
+
 function renderKeymap() {
   const el = document.getElementById('keymap-visual');
   if (!el || !APP.vilData) return;
-  const layout = APP.vilData.layout;
   const li = APP.currentLayer;
-  if (!layout || !layout[li]) {
-    el.innerHTML = '<div class="empty-state"><p>No data for layer ' + li + '</p></div>';
-    return;
-  }
-  const ld = layout[li];
+  const ld = APP.vilData.layout[li];
+  if (!ld) { el.innerHTML = '<div class="empty-state"><p>No data for layer '+li+'</p></div>'; return; }
   const left = ld.map(r => r.slice(0,6));
   const right = ld.map(r => r.slice(6,12));
   function half(rows) {
@@ -132,7 +137,7 @@ function renderKeymap() {
         if (code===-1||code==='KC_NO'||code===undefined||code===null) return '<div class="key empty"></div>';
         const dec = decodeKC(code);
         let cls = 'key';
-        if (dec.cls) cls += ' ' + dec.cls;
+        if (dec.cls) cls += ' '+dec.cls;
         if (!dec.label) cls += ' empty';
         if (c===5) cls += ' thumb';
         return '<div class="'+cls+'" title="'+(dec.kc||code)+'"><span class="label">'+(dec.label||'')+'</span></div>';
@@ -141,7 +146,6 @@ function renderKeymap() {
   }
   el.innerHTML = '<div class="keyboard-wrap"><div class="half left">'+half(left)+'</div><div class="half right">'+half(right)+'</div></div>';
 }
-
 function updateLayerTabs() {
   const el = document.getElementById('layer-tabs');
   if (!el || !APP.vilData) return;
@@ -175,6 +179,10 @@ function renderConfigs() {
     card.addEventListener('click', function() {
       const f = this.dataset.profile;
       if (f !== APP.currentProfile) {
+        loadProfile(APP.currentKeyboard, f);
+        renderConfigs();
+        window.location.hash = 'keymap';
+      }
 function renderDocs() {
   const el = document.getElementById('docs-content');
   if (!el) return;
@@ -233,10 +241,6 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
-        loadProfile(APP.currentKeyboard, f);
-        renderConfigs();
-        window.location.hash = 'keymap';
-      }
     });
   });
 }
@@ -256,25 +260,4 @@ function renderFiles() {
     '<div class="indent"><div class="tree-item file"><span class="icon">📄</span><a href="'+base+'meta.json" target="_blank">meta.json</a></div>'+profs+
     '<div class="tree-item"><span class="folder" onclick="this.classList.toggle(\'open\')">firmware/</span></div>'+
     '<div class="indent">'+fws+'</div></div></div></div>';
-}
-    APP.currentKeyboard = 'cheapino-v2';
-    APP.currentProfile = meta.profiles[0]?.file || null;
-    return meta;
-  } catch (e) { console.warn(e); return null; }
-}
-
-async function loadProfile(kb, file) {
-  try {
-    const resp = await fetch(APP.basePath + 'keyboards/' + kb + '/' + file);
-    const data = await resp.json();
-    APP.vilData = data;
-    APP.currentProfile = file;
-    APP.currentLayer = 0;
-    renderKeymap();
-    updateLayerTabs();
-  } catch (e) {
-    console.warn(e);
-    const el = document.getElementById('keymap-visual');
-    if (el) el.innerHTML = '<div class="empty-state"><p>Could not load: ' + file + '</p></div>';
-  }
 }
