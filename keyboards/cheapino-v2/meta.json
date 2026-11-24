@@ -1,0 +1,20 @@
+{
+  "name": "Cheapino v2",
+  "id": "cheapino-v2",
+  "description": "34-key split mechanical keyboard",
+  "layout": "split 3x5+3",
+  "layers": 6,
+  "layers_named": ["BASE", "NUMBERS", "NAV/EDIT", "MOUSE", "FN4", "FN5"],
+  "profiles": [
+    { "file": "cheapino-v2-v3.vil", "name": "v2-v3 (Tap-Dance)", "desc": "Standard config with TG/MO tap-dance on thumb keys" },
+    { "file": "cheapino-vial-mo.vil", "name": "vial-mo", "desc": "Momentary (MO) layer switching on thumb keys" },
+    { "file": "cheapino-v2-nelson.vil", "name": "Nelson", "desc": "Nelson's personal layout" },
+    { "file": "cheapino-vial-stock.vil", "name": "Stock", "desc": "Stock/default VIAL layout" },
+    { "file": "cheapino-vial-combo.vil", "name": "Combo", "desc": "Combo-based layout" },
+    { "file": "cheapino-vial-layout.vil", "name": "Layout v1", "desc": "Layout variant" }
+  ],
+  "firmware": [
+    { "file": "cheapino_vial-STOCK.uf2", "name": "Stock FW", "desc": "Stock VIAL firmware" },
+    { "file": "cheapino_vial-PATCHED.uf2", "name": "Patched FW", "desc": "Patched VIAL firmware" }
+  ]
+}
