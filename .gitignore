@@ -1,0 +1,4 @@
+# Personal / private keyboard profiles — never publish
+keyboards/*/personal*.vil
+keyboards/*/private*.vil
+keyboards/*/*.local.vil

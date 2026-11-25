@@ -18,7 +18,6 @@ Built with vanilla HTML, CSS, and JavaScript. No frameworks, no build step.
 |---|---|
 | `cheapino-v2-v3.vil` | Standard layout with tap-dance layers |
 | `cheapino-vial-mo.vil` | Momentary (MO) based layer switching |
-| `cheapino-v2-nelson.vil` | Nelson's personal config |
 | `cheapino-vial-stock.vil` | Stock/default layout |
 | `cheapino-vial-combo.vil` | Combo-based layout |
 | `cheapino-vial-layout.vil` | Layout variant |
