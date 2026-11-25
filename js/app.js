@@ -272,8 +272,8 @@ function encoderHTML() {
   var row = APP.vilData && APP.vilData.encoder_layout && APP.vilData.encoder_layout[effLayer()];
   var turns = row && row[0];
   if (turns) {
-    h += '<div class="enc-turn"><span class="enc-dir">&#8635;</span><span class="enc-val">' + turnLabel(turns[0]) + '</span></div>';
-    h += '<div class="enc-turn"><span class="enc-dir">&#8634;</span><span class="enc-val">' + turnLabel(turns[1]) + '</span></div>';
+    h += '<div class="enc-turn" title="Twist right"><span class="enc-dir">&#8594;</span><span class="enc-val">' + turnLabel(turns[0]) + '</span></div>';
+    h += '<div class="enc-turn" title="Twist left"><span class="enc-dir">&#8592;</span><span class="enc-val">' + turnLabel(turns[1]) + '</span></div>';
   } else {
     h += '<div class="enc-turn"><span class="enc-val enc-none">&mdash;</span></div>';
   }
@@ -368,7 +368,7 @@ function calloutForEncoder(el) {
   if (turns && (turns[0] !== "KC_TRNS" || turns[1] !== "KC_TRNS")) {
     var a = describe(turns[0]);
     var b = describe(turns[1]);
-    h += '<div class="co-detail">&#8635; ' + esc(a ? a.t : turns[0]) + " &nbsp;&middot;&nbsp; &#8634; " + esc(b ? b.t : turns[1]) + "</div>";
+    h += '<div class="co-detail">Twist right &rarr; ' + esc(a ? a.t : turns[0]) + "<br>Twist left &rarr; " + esc(b ? b.t : turns[1]) + "</div>";
   } else {
     h += '<div class="co-detail">No encoder action on this layer.</div>';
   }
@@ -537,7 +537,7 @@ function layerTable(idx) {
     var ta = describe(turns[0]);
     var tb = describe(turns[1]);
     if ((turns[0] !== "KC_TRNS" && ta) || (turns[1] !== "KC_TRNS" && tb)) {
-      rows += '<tr><td class="g-key">Knob</td><td><span class="g-dot" style="background:' + catColor("mouse") + '"></span>Turn &#8635; ' + esc(ta ? ta.t : turns[0]) + " &middot; &#8634; " + esc(tb ? tb.t : turns[1]) + "</td></tr>";
+      rows += '<tr><td class="g-key">Knob</td><td><span class="g-dot" style="background:' + catColor("mouse") + '"></span>Twist right &rarr; ' + esc(ta ? ta.t : turns[0]) + '<span class="g-detail">Twist left &rarr; ' + esc(tb ? tb.t : turns[1]) + "</span></td></tr>";
     }
   }
   var ek = meta.encoder && meta.encoder.key;
@@ -590,10 +590,13 @@ if (p.chains && p.chains.length) {
     if (!layerIsUsed(l)) continue;
     h += '<div class="sec g-layer"><h2><span class="g-dot big" style="background:' + layerColor(l) + '"></span>' + esc(full[l] || names[l]) + "</h2>" + layerTable(l) + "</div>";
   }
-  h += '<div class="sec"><h2>Flashing the firmware</h2>';
-  h += "<p>Put the Cheapino into bootloader mode (hold BOOT, tap reset). A drive named <b>RPI-RP2</b> appears. Drag the <b>.uf2</b> onto it.</p>";
-  h += "<ul><li><b>cheapino_vial-PATCHED.uf2</b> — layer LEDs + sub-layer auto-clear (use this one)</li><li><b>cheapino_vial-STOCK.uf2</b> — stock VIAL firmware</li></ul></div>";
-  h += '<div class="sec"><h2>Loading a layout (.vil)</h2><p>Open <a href="https://vial.rocks" target="_blank" rel="noopener">VIAL</a>, connect the keyboard, <b>File &rarr; Load Saved Layout</b>, pick the <code>.vil</code> from the Files drawer.</p></div>';
+  h += '<div class="sec"><h2>Flashing &amp; loading — the order matters</h2>';
+  h += "<p><b>Day-to-day layout changes never need a flash.</b> The <code>.vil</code> is the source of truth for every key and for the encoder — load it through Vial and you are done.</p>";
+  h += "<p><b>Firmware first, .vil second.</b> This layout uses <code>TG(3)</code>/<code>TG(5)</code> sub-layer toggles, which only clean up after themselves on the patched firmware. On unpatched firmware a toggled sub-layer stays stuck until you hold NAV and tap it again.</p>";
+  h += "<ol><li><b>Firmware</b> (only when the keymap logic changes): hold the <b>BOOT</b> button and plug in USB — a drive named <b>RPI-RP2</b> appears. Drag <b>cheapino_vial-PATCHED.uf2</b> onto it and the board reboots on the new firmware. A fresh <code>cheapino_vial.uf2</code> from <code>qmk compile -kb cheapino -km vial</code> is flashed the same way.</li>";
+  h += '<li><b>Layout</b>: open <a href="https://vial.rocks" target="_blank" rel="noopener">vial.rocks</a> or the Vial desktop app, connect the keyboard, <b>File &rarr; Load Saved Layout</b>, pick the <code>.vil</code> from the Files drawer.</li></ol>';
+  h += '<p class="g-hint">Note: <code>qmk flash</code> auto-detection is broken on current Windows (it calls <code>wmic</code>, which no longer exists) — use the manual drag-and-drop.</p>';
+  h += "<ul><li><b>cheapino_vial-PATCHED.uf2</b> — layer LEDs + sub-layer auto-clear (the build on the board)</li><li><b>cheapino_vial-STOCK.uf2</b> — stock VIAL firmware (no auto-clear)</li></ul></div>";
   h += '<div class="sec"><h2>The story</h2><p>How this layout came to be — the dead ends, the philosophy and the numbers: <a href="story.html">read the full story</a>.</p></div>';
   return h;
 }
