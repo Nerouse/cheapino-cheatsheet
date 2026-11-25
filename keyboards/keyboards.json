@@ -1,0 +1,10 @@
+{
+  "keyboards": [
+    {
+      "id": "cheapino-v2",
+      "name": "Cheapino v2",
+      "description": "34-key split mechanical keyboard",
+      "layout": "split 3x5+3"
+    }
+  ]
+}

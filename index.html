@@ -3,25 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CHEAPINO — Keymap Reference</title>
+<title>Cheapino — Keymap Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<noscript><div style="padding:32px;text-align:center;color:#85858D;font-family:system-ui,sans-serif"><p>⚠ JavaScript is required for this app. Please enable it.</p></div></noscript>
+<noscript><div style="padding:32px;text-align:center;color:#85858D;font-family:Inter,system-ui,sans-serif"><p>JavaScript is required for this app. Please enable it.</p></div></noscript>
 
 <!-- ═══ HEADER ═══ -->
 <header class="topbar">
-  <div class="topbar-l">
-    <span class="topbar-brand"><span class="ac">⌨</span> CHEAPINO</span>
+  <div class="topbar-brand">
+    <span class="brand-icon">⌨</span>
+    <div class="brand-text">
+      <span class="brand-name">Cheapino</span>
+      <span class="brand-sub">Keymap Reference</span>
+    </div>
   </div>
-  <div class="topbar-c">
-    <select id="profile-select" class="profile-dropdown" aria-label="Select profile"></select>
-    <span id="profile-desc" class="profile-desc"></span>
+  <div class="topbar-selectors">
+    <div class="selector-wrap">
+      <label class="selector-label" for="keyboard-select">Keyboard</label>
+      <select id="keyboard-select" class="selector" aria-label="Select keyboard"></select>
+    </div>
+    <div class="selector-wrap">
+      <label class="selector-label" for="profile-select">Profile</label>
+      <select id="profile-select" class="selector" aria-label="Select profile"></select>
+    </div>
   </div>
-  <div class="topbar-r">
-    <button class="icobtn" id="btn-files" title="Browse files">📁</button>
-    <button class="icobtn" id="btn-docs" title="Documentation">📖</button>
-    <a class="icobtn" href="https://github.com/Nerouse/cheapino-cheatsheet" target="_blank" title="GitHub repo">🐙</a>
+  <div class="topbar-actions">
+    <button class="action-btn" id="btn-files" title="Browse files">📁 Files</button>
+    <button class="action-btn" id="btn-docs" title="Documentation">📖 Docs</button>
+    <a class="action-btn" href="https://github.com/Nerouse/cheapino-cheatsheet" target="_blank" title="GitHub repo">🐙 Repo</a>
   </div>
 </header>
 
@@ -35,20 +48,18 @@
   </div>
 </main>
 
-<!-- ═══ DRAWER OVERLAY ═══ -->
+<!-- ═══ DRAWER ═══ -->
 <div id="drawer-overlay" class="drawer-overlay"></div>
-
-<!-- ═══ DRAWER (Files / Docs) ═══ -->
 <aside id="drawer" class="drawer">
   <div class="drawer-head">
     <span id="drawer-title">Files</span>
-    <button id="drawer-close" class="icobtn">&times;</button>
+    <button id="drawer-close" class="icobtn" aria-label="Close drawer">&times;</button>
   </div>
   <div class="drawer-body" id="drawer-body"></div>
 </aside>
 
 <!-- ═══ FOOTER ═══ -->
-<footer class="footer">CHEAPINO ⌨ v2</footer>
+<footer class="footer">Cheapino ⌨ v2</footer>
 
 <script src="js/app.js"></script>
 </body>
