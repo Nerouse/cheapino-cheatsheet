@@ -1,6 +1,43 @@
 /* cheapino-cheatsheet - App Logic (Multi-Keyboard) */
 
-var APP = { basePath:"", keyboards:[], keyboardMeta:{}, currentKeyboardId:null, currentKeyboardName:"", currentProfile:null, currentLayer:0, vilData:null, metaMap:{} };
+var APP = { basePath:"", keyboards:[], keyboardMeta:{}, currentKeyboardId:null, currentKeyboardName:"", currentProfile:null, toggledLayer:0, holdLayer:null, vilData:null, metaMap:{} };
+
+function effLayer() { return APP.holdLayer === null ? APP.toggledLayer : APP.holdLayer; }
+
+function layerAction(code) {
+  if (!code || typeof code !== "string") return null;
+  var m = code.match(/^MO\((\d+)\)$/); if (m) return { hold: parseInt(m[1], 10) };
+  m = code.match(/^TT\((\d+)\)$/);     if (m) return { hold: parseInt(m[1], 10) };
+  m = code.match(/^TG\((\d+)\)$/);     if (m) return { toggle: parseInt(m[1], 10) };
+  m = code.match(/^TO\((\d+)\)$/);     if (m) return { toggle: parseInt(m[1], 10) };
+  m = code.match(/^TD\((\d+)\)$/);
+  if (m) {
+    var td = APP.vilData && APP.vilData.tap_dance;
+    var e = td && td[parseInt(m[1], 10)];
+    if (!e) return null;
+    var tap = layerAction(e[0]);
+    var hold = layerAction(e[1]);
+    var out = {};
+    if (hold && hold.hold !== undefined) out.hold = hold.hold;
+    else if (hold && hold.toggle !== undefined) out.hold = hold.toggle;
+    if (tap && tap.toggle !== undefined) out.toggle = tap.toggle;
+    else if (tap && tap.hold !== undefined) out.toggle = tap.hold;
+    return (out.hold !== undefined || out.toggle !== undefined) ? out : null;
+  }
+  return null;
+}
+
+function layerIsUsed(i) {
+  var L = APP.vilData && APP.vilData.layout && APP.vilData.layout[i];
+  if (!L) return false;
+  for (var r = 0; r < L.length; r++) {
+    for (var c = 0; c < L[r].length; c++) {
+      var v = L[r][c];
+      if (v !== -1 && v !== "KC_NO" && v !== "KC_TRNS" && v !== undefined && v !== null) return true;
+    }
+  }
+  return false;
+}
 
 var KC_MAP = {
   "KC_A":"A","KC_B":"B","KC_C":"C","KC_D":"D","KC_E":"E","KC_F":"F","KC_G":"G",
@@ -127,7 +164,9 @@ async function loadProfile(kb, file) {
     var data = await r.json();
     APP.vilData = data;
     APP.currentProfile = file;
-    APP.currentLayer = 0;
+    APP.toggledLayer = 0;
+    APP.holdLayer = null;
+    APP.pressed = null;
     var sel = document.getElementById("profile-select");
     if (sel) sel.value = file;
     renderKeymap();
@@ -141,7 +180,7 @@ async function loadProfile(kb, file) {
 
 function kcAt(pos) {
   if (!pos || !APP.vilData) return null;
-  var ld = APP.vilData.layout[APP.currentLayer];
+  var ld = APP.vilData.layout[effLayer()];
   if (!ld) return null;
   var row = ld[pos[0]];
   if (!row) return null;
@@ -156,7 +195,10 @@ function keyHTML(pos) {
   var cl = "key";
   if (dc.cls) cl += " " + dc.cls;
   if (!dc.label) cl += " empty";
-  return '<div class="' + cl + '" title="' + (dc.kc || c) + '"><span class="label">' + (dc.label || "") + '</span></div>';
+  var act = layerAction(c);
+  var attr = "";
+  if (act) { cl += " clickable"; attr = " data-act='" + JSON.stringify(act) + "'"; }
+  return '<div class="' + cl + '"' + attr + ' title="' + (dc.kc || c) + '"><span class="label">' + (dc.label || "") + '</span></div>';
 }
 
 function sideHTML(side, mirror) {
@@ -179,14 +221,59 @@ function sideHTML(side, mirror) {
     }
     h += "</div>";
   }
-  if (side.extra && side.extra.length) {
-    h += '<div class="kb-extra">';
-    for (var e = 0; e < side.extra.length; e++) h += keyHTML(side.extra[e]);
-    h += "</div>";
-  }
   h += "</div>";
   return h;
 }
+
+function turnLabel(code) {
+  if (!code || code === "KC_NO" || code === "KC_TRNS") return "\u2014";
+  var dc = decodeKC(code);
+  return dc.label || code;
+}
+
+function encoderHTML() {
+  var meta = APP.metaMap[APP.currentKeyboardId];
+  var enc = meta && meta.encoder;
+  var h = '<div class="enc-island">';
+  h += '<div class="enc-title">Encoder</div>';
+  var row = APP.vilData && APP.vilData.encoder_layout && APP.vilData.encoder_layout[effLayer()];
+  var turns = row && row[0];
+  if (turns) {
+    h += '<div class="enc-turn"><span class="enc-dir">&#8635;</span><span class="enc-val">' + turnLabel(turns[0]) + '</span></div>';
+    h += '<div class="enc-turn"><span class="enc-dir">&#8634;</span><span class="enc-val">' + turnLabel(turns[1]) + '</span></div>';
+  } else {
+    h += '<div class="enc-turn"><span class="enc-val enc-none">&mdash;</span></div>';
+  }
+  if (enc && enc.key) h += '<div class="enc-click">' + keyHTML(enc.key) + '</div>';
+  h += "</div>";
+  return h;
+}
+
+function attachKeyHandlers(root) {
+  var keys = root.querySelectorAll(".key[data-act]");
+  for (var i = 0; i < keys.length; i++) {
+    (function(el) {
+      var act;
+      try { act = JSON.parse(el.getAttribute("data-act")); } catch (e) { return; }
+      el.addEventListener("mousedown", function(e) {
+        e.preventDefault();
+        APP.pressed = { act: act, t: Date.now() };
+        if (act.hold !== undefined) { APP.holdLayer = act.hold; refresh(); }
+      });
+    })(keys[i]);
+  }
+}
+
+function releaseKeys() {
+  var p = APP.pressed;
+  APP.pressed = null;
+  if (!p) return;
+  if ((Date.now() - p.t) < 175 && p.act.toggle !== undefined) APP.toggledLayer = p.act.toggle;
+  if (APP.holdLayer !== null) APP.holdLayer = null;
+  refresh();
+}
+
+function refresh() { renderKeymap(); updateLayerTabs(); }
 
 function renderKeymap() {
   var el = document.getElementById("keymap-visual");
@@ -197,7 +284,8 @@ function renderKeymap() {
     el.innerHTML = '<div class="empty-state"><p>No physical layout defined for this keyboard.</p></div>';
     return;
   }
-  el.innerHTML = '<div class="kb-wrap">' + sideHTML(layout.left, false) + sideHTML(layout.right, true) + "</div>";
+  el.innerHTML = '<div class="kb-wrap">' + sideHTML(layout.left, false) + encoderHTML() + sideHTML(layout.right, true) + "</div>";
+  attachKeyHandlers(el);
 }
 
 function updateLayerTabs() {
@@ -206,19 +294,22 @@ function updateLayerTabs() {
   var n = APP.vilData.layout.length;
   if (n === 0) return;
   var names = getLayerNames();
-  if (APP.currentLayer >= n) APP.currentLayer = 0;
-  el.innerHTML = names.slice(0, n).map(function(s, i) {
-    return '<button class="layer-tab' + (i === APP.currentLayer ? " active" : "") + '" data-layer="' + i + '">' + s + "</button>";
-  }).join("");
+  var active = effLayer();
+  var html = "";
+  for (var i = 0; i < n; i++) {
+    if (!layerIsUsed(i)) continue;
+    html += '<button class="layer-tab' + (i === active ? " active" : "") + '" data-layer="' + i + '">' + names[i] + "</button>";
+  }
+  el.innerHTML = html;
   var tabs = el.querySelectorAll(".layer-tab");
   for (var t = 0; t < tabs.length; t++) {
- (function(btn) {
+    (function(btn) {
       btn.addEventListener("click", function() {
-        APP.currentLayer = parseInt(this.dataset.layer);
- updateLayerTabs();
- renderKeymap();
+        APP.toggledLayer = parseInt(this.dataset.layer, 10);
+        APP.holdLayer = null;
+        refresh();
       });
- })(tabs[t]);
+    })(tabs[t]);
   }
 }
 
@@ -303,6 +394,8 @@ async function init() {
   document.getElementById("drawer-close").addEventListener("click", closeDrawer);
   document.getElementById("drawer-overlay").addEventListener("click", closeDrawer);
   document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeDrawer(); });
+  document.addEventListener("mouseup", releaseKeys);
+  window.addEventListener("blur", releaseKeys);
 }
 
 document.addEventListener("DOMContentLoaded", init);

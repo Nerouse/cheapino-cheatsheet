@@ -201,7 +201,6 @@ body {
 .kb-half.left .kb-thumbs { justify-content: flex-end; padding-right: 6px; }
 .kb-half.right .kb-thumbs { justify-content: flex-start; padding-left: 6px; }
 .kb-thumb { display: flex; }
-.kb-extra { display: flex; gap: 4px; margin-top: 10px; }
 .key {
   width: clamp(36px, 7vw, 52px);
   height: clamp(36px, 7vw, 52px);
@@ -226,6 +225,40 @@ body {
 .key.layer { background: var(--bt); border-color: var(--bl); color: var(--bl); font-weight: 600; }
 .key.transparent { color: var(--tm); font-style: italic; font-size: clamp(6px, 1vw, 7px); }
 .key .label { max-width: 100%; overflow: hidden; }
+.key.clickable { cursor: pointer; }
+.key.clickable:hover { border-color: var(--bl); background: rgba(107, 158, 255, 0.07); color: var(--t); }
+.key.clickable:active { border-color: var(--bl); background: var(--bl); color: #fff; }
+
+/* ─── Encoder island ─── */
+.enc-island {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px dashed var(--bbr);
+  border-radius: var(--radius);
+  background: rgba(107, 158, 255, 0.02);
+}
+.enc-title {
+  font: 600 8px/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--tm);
+  margin-bottom: 2px;
+}
+.enc-turn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 9px/1 var(--font-mono);
+  color: var(--td);
+}
+.enc-dir { color: var(--bl); font-size: 11px; }
+.enc-val { white-space: nowrap; }
+.enc-none { color: var(--tm); }
+.enc-click { margin-top: 4px; }
 
 /* ═══ DRAWER ═══ */
 .drawer-overlay {
