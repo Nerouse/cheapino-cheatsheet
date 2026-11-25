@@ -183,15 +183,25 @@ body {
   justify-content: center;
   padding: 8px 16px 32px;
 }
-.keyboard-wrap {
+.kb-wrap {
   display: flex;
   justify-content: center;
-  gap: clamp(8px, 2vw, 20px);
+  gap: clamp(16px, 5vw, 56px);
   padding: 8px 0;
   overflow-x: auto;
 }
-.half { display: flex; flex-direction: column; gap: 4px; }
-.row { display: flex; gap: 4px; justify-content: center; }
+.kb-half {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.kb-cols { display: flex; gap: 4px; }
+.kb-col { display: flex; flex-direction: column; gap: 4px; }
+.kb-thumbs { display: flex; gap: 4px; margin-top: 10px; width: 100%; }
+.kb-half.left .kb-thumbs { justify-content: flex-end; padding-right: 6px; }
+.kb-half.right .kb-thumbs { justify-content: flex-start; padding-left: 6px; }
+.kb-thumb { display: flex; }
+.kb-extra { display: flex; gap: 4px; margin-top: 10px; }
 .key {
   width: clamp(36px, 7vw, 52px);
   height: clamp(36px, 7vw, 52px);
@@ -211,7 +221,6 @@ body {
   position: relative;
 }
 .key.empty { opacity: 0; pointer-events: none; border-color: transparent; }
-.key.thumb { border-color: var(--bl); border-width: 1.5px; }
 .key.alpha { color: var(--t); font-size: clamp(8px, 1.4vw, 10px); }
 .key.mod { border-color: var(--bl); }
 .key.layer { background: var(--bt); border-color: var(--bl); color: var(--bl); font-weight: 600; }

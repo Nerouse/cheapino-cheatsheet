@@ -73,11 +73,14 @@ function getLayerNames() {
   var n = (APP.vilData && APP.vilData.layout) ? APP.vilData.layout.length : 6;
   var meta = APP.metaMap[APP.currentKeyboardId];
   var profile = null;
+  var names = null;
   if (meta) profile = meta.profiles.find(function(p) { return p.file === APP.currentProfile; });
-  if (profile && profile.layers_named) return profile.layers_named.slice(0,n);
-  if (meta && meta.layers_named) return meta.layers_named.slice(0,n);
-  var defs = ["BASE","MOUSE","WIN","NUMBERS","NAV/EDIT","FN5","FN6","FN7"];
-  return defs.slice(0,n);
+  if (profile && profile.layers_named) names = profile.layers_named;
+  else if (meta && meta.layers_named) names = meta.layers_named;
+  if (!names) names = ["BASE","LAYER 1","LAYER 2","LAYER 3","LAYER 4","LAYER 5","LAYER 6","LAYER 7"];
+  var out = names.slice(0, n);
+  while (out.length < n) out.push("LAYER " + out.length);
+  return out;
 }
 
 /* Keyboard loading */
@@ -136,29 +139,65 @@ async function loadProfile(kb, file) {
   }
 }
 
+function kcAt(pos) {
+  if (!pos || !APP.vilData) return null;
+  var ld = APP.vilData.layout[APP.currentLayer];
+  if (!ld) return null;
+  var row = ld[pos[0]];
+  if (!row) return null;
+  var v = row[pos[1]];
+  return v === undefined ? null : v;
+}
+
+function keyHTML(pos) {
+  var c = kcAt(pos);
+  if (c === null || c === -1 || c === "KC_NO") return '<div class="key empty"></div>';
+  var dc = decodeKC(c);
+  var cl = "key";
+  if (dc.cls) cl += " " + dc.cls;
+  if (!dc.label) cl += " empty";
+  return '<div class="' + cl + '" title="' + (dc.kc || c) + '"><span class="label">' + (dc.label || "") + '</span></div>';
+}
+
+function sideHTML(side, mirror) {
+  if (!side) return "";
+  var stagger = mirror ? [-5, -2, 0, 3, 5] : [5, 3, 0, -2, -5];
+  var h = '<div class="kb-half ' + (mirror ? "right" : "left") + '">';
+  h += '<div class="kb-cols">';
+  var cols = side.rows[0].length;
+  for (var c = 0; c < cols; c++) {
+    h += '<div class="kb-col" style="margin-top:' + stagger[c] + 'px">';
+    for (var r = 0; r < side.rows.length; r++) h += keyHTML(side.rows[r][c]);
+    h += "</div>";
+  }
+  h += "</div>";
+  if (side.thumbs && side.thumbs.length) {
+    var ts = mirror ? [12, 6, 0] : [0, 6, 12];
+    h += '<div class="kb-thumbs">';
+    for (var t = 0; t < side.thumbs.length; t++) {
+      h += '<div class="kb-thumb" style="margin-top:' + ts[t] + 'px">' + keyHTML(side.thumbs[t]) + "</div>";
+    }
+    h += "</div>";
+  }
+  if (side.extra && side.extra.length) {
+    h += '<div class="kb-extra">';
+    for (var e = 0; e < side.extra.length; e++) h += keyHTML(side.extra[e]);
+    h += "</div>";
+  }
+  h += "</div>";
+  return h;
+}
+
 function renderKeymap() {
   var el = document.getElementById("keymap-visual");
   if (!el || !APP.vilData) return;
-  var li = APP.currentLayer;
-  var ld = APP.vilData.layout[li];
-  if (!ld) { el.innerHTML = "<div class=\"empty-state\"><p>No data for layer " + li + "</p></div>"; return; }
-  var left = ld.map(function(r) { return r.slice(0,6); });
-  var right = ld.map(function(r) { return r.slice(6,12); });
-  function half(rows) {
-    return rows.map(function(row) {
-      if (row.every(function(k) { return !k || k === -1 || k === "KC_NO"; })) return "";
-      return "<div class=\"row\">" + row.map(function(c, i) {
-        if (c === -1 || c === "KC_NO" || c === undefined || c === null) return "<div class=\"key empty\"></div>";
-        var dc = decodeKC(c);
-        var cl = "key";
-        if (dc.cls) cl += " " + dc.cls;
-        if (!dc.label) cl += " empty";
-        if (i === 5) cl += " thumb";
-        return "<div class=\"" + cl + "\" title=\"" + (dc.kc || c) + "\"><span class=\"label\">" + (dc.label || "") + "</span></div>";
-      }).join("") + "</div>";
-    }).filter(function(s) { return s; }).join("");
+  var meta = APP.metaMap[APP.currentKeyboardId];
+  var layout = meta && meta.layout;
+  if (!layout) {
+    el.innerHTML = '<div class="empty-state"><p>No physical layout defined for this keyboard.</p></div>';
+    return;
   }
-  el.innerHTML = "<div class=\"keyboard-wrap\"><div class=\"half left\">" + half(left) + "</div><div class=\"half right\">" + half(right) + "</div></div>";
+  el.innerHTML = '<div class="kb-wrap">' + sideHTML(layout.left, false) + sideHTML(layout.right, true) + "</div>";
 }
 
 function updateLayerTabs() {
