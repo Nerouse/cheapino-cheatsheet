@@ -1,10 +1,10 @@
 {
   "name": "Cheapino v2",
   "id": "cheapino-v2",
-  "description": "36-key split mechanical keyboard",
+  "description": "36-key split ergonomic keyboard",
   "form": "split 3x5+3",
   "layers": 6,
-  "layers_named": ["BASE", "LAYER 1", "LAYER 2", "LAYER 3", "LAYER 4", "LAYER 5"],
+  "layers_named": ["BASE", "NUMBERS", "NAV", "MOUSE", "SCROLL", "F-KEYS"],
   "layout": {
     "left": {
       "rows": [
@@ -12,7 +12,7 @@
         [[5,10],[5,9],[5,8],[5,7],[5,6]],
         [[6,10],[6,9],[6,8],[6,7],[6,6]]
       ],
-      "thumbs": [[4,11],[5,11],[6,11]]
+      "thumbs": [[6,11],[5,11],[4,11]]
     },
     "right": {
       "rows": [
@@ -25,14 +25,83 @@
   },
   "encoder": { "key": [3,0] },
   "profiles": [
-    { "file": "cheapino-v2-v3.vil", "name": "v2-v3 (Tap-Dance)", "desc": "Standard config with TG/MO tap-dance on thumb keys" },
-    { "file": "cheapino-vial-mo.vil", "name": "vial-mo", "desc": "Momentary (MO) layer switching on thumb keys" },
-    { "file": "cheapino-vial-stock.vil", "name": "Stock", "desc": "Stock/default VIAL layout" },
-    { "file": "cheapino-vial-combo.vil", "name": "Combo", "desc": "Combo-based layout" },
-    { "file": "cheapino-vial-layout.vil", "name": "Layout v1", "desc": "Layout variant" }
+    {
+      "file": "cheapino-vial-sticky.vil",
+      "name": "Sticky — final",
+      "desc": "The layout on the board: hold-to-peek layers, one-shot modifiers, MOUSE + F-KEYS sub-layers, 3-mode knob",
+      "layers_named": ["BASE", "NUMBERS", "NAV", "MOUSE", "SCROLL", "F-KEYS"],
+      "layers_full": ["Base (QWERTY)", "Numbers + Symbols", "Navigation", "Mouse", "Scroll toggle", "F-keys"],
+      "layers_trigger": ["always on", "hold left thumb middle (MO 1)", "hold left thumb outer (MO 2)", "on NAV: tap F (TG 3)", "tap the knob (TG 4)", "on NAV: tap D (TG 5)"],
+      "layers_purpose": [
+        "Type — hands stay on the home row",
+        "Digits and symbols without leaving the letters",
+        "Move, select and fire shortcuts — hosts the sticky modifiers",
+        "Mouse pointer, clicks and wheel",
+        "No key changes — the knob becomes a horizontal scroll wheel",
+        "Function keys F1–F12"
+      ],
+      "subLayerClear": [3, 5],
+      "chains": [
+        ["Switch windows — Alt+Tab", "E then R"],
+        ["Previous tab — Ctrl+Shift+Tab", "W then A then R"],
+        ["Run / debug — Ctrl+F5", "W then G"],
+        ["Select to line end — Shift+End", "A then M"],
+        ["Jump to file start — Ctrl+Home", "W then N"],
+        ["Word left — Ctrl+Left", "W then H"],
+        ["Previous tab — Ctrl+PgUp", "W then I"]
+      ]
+    },
+    {
+      "file": "cheapino-vial-combo.vil",
+      "name": "Hold-and-toggle (superseded)",
+      "desc": "Tap latches a layer, hold is momentary — four layers on two thumb keys",
+      "layers_named": ["BASE", "NUMBERS", "NAV", "MOUSE", "EMPTY", "EMPTY"],
+      "layers_full": ["Base (QWERTY)", "Numbers", "Navigation", "Mouse", "Empty placeholder", "Empty placeholder"],
+      "layers_trigger": ["always on", "tap TD(0)", "tap TD(1)", "hold TD(0)", "—", "—"],
+      "layers_purpose": [
+        "Type — standard QWERTY",
+        "Digits and symbols",
+        "Navigation, window and editing shortcuts",
+        "Mouse pointer and clicks",
+        "Empty placeholder",
+        "Empty placeholder"
+      ]
+    },
+    {
+      "file": "cheapino-vial-layout.vil",
+      "name": "Hold (superseded)",
+      "desc": "Pure momentary layers on three left-thumb keys",
+      "layers_named": ["BASE", "NUMBERS", "NAV", "MOUSE", "EMPTY", "EMPTY"],
+      "layers_full": ["Base (QWERTY)", "Numbers", "Navigation", "Mouse", "Empty placeholder", "Empty placeholder"],
+      "layers_trigger": ["always on", "hold left thumb middle (MO 1)", "hold left thumb outer (MO 2)", "hold left thumb inner (MO 3)", "—", "—"],
+      "layers_purpose": [
+        "Type — standard QWERTY",
+        "Digits and symbols",
+        "Navigation and editing",
+        "Mouse pointer and clicks",
+        "Empty placeholder",
+        "Empty placeholder"
+      ]
+    },
+    {
+      "file": "cheapino-vial-stock.vil",
+      "name": "Stock (baseline)",
+      "desc": "The starting point — stock Vial config, also the build template for every layout",
+      "layers_named": ["BASE", "MOUSE+EDIT", "WINDOWS", "NUMBERS+F", "NAV+EDIT", "EMPTY"],
+      "layers_full": ["Base (QWERTY)", "Mouse + editing", "Windows & tabs", "Numbers + F-keys", "Nav + sticky mods", "Empty placeholder"],
+      "layers_trigger": ["always on", "tap TD(0)", "tap TD(1)", "hold TD(0)", "hold TD(1)", "—"],
+      "layers_purpose": [
+        "Type — standard QWERTY",
+        "Mouse on the right hand, quick edits on the left",
+        "Windows, virtual desktops and tabs",
+        "Numbers and function keys",
+        "Arrows, editing shortcuts and sticky modifiers",
+        "Empty placeholder"
+      ]
+    }
   ],
   "firmware": [
     { "file": "cheapino_vial-STOCK.uf2", "name": "Stock FW", "desc": "Stock VIAL firmware" },
-    { "file": "cheapino_vial-PATCHED.uf2", "name": "Patched FW", "desc": "Patched VIAL firmware" }
+    { "file": "cheapino_vial-PATCHED.uf2", "name": "Patched FW", "desc": "Patched VIAL firmware — layer LEDs + sub-layer auto-clear" }
   ]
 }
