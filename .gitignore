@@ -2,3 +2,6 @@
 keyboards/*/personal*.vil
 keyboards/*/private*.vil
 keyboards/*/*.local.vil
+
+# Agent / tooling config — never publish
+.cline/
