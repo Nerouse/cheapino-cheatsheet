@@ -205,19 +205,19 @@ function renderFilesContent() {
   var ps = "";
   for (var i = 0; i < m.profiles.length; i++) {
     var pr = m.profiles[i];
-    ps += "<div class=\"tree-item file\"><span class=\"icon\">\u2328</span><a href=\"" + b + pr.file + "\" target=\"_blank\">" + pr.file + "</a></div>";
+    ps += "<div class=\"tree-item file\"><a href=\"" + b + pr.file + "\" target=\"_blank\">" + pr.file + "</a></div>";
   }
   var fw = "";
   if (m.firmware) {
     for (var j = 0; j < m.firmware.length; j++) {
       var f = m.firmware[j];
-      fw += "<div class=\"tree-item file\"><span class=\"icon\">\u26A1</span><a href=\"" + b + "firmware/" + f.file + "\" target=\"_blank\">" + f.file + "</a></div>";
+      fw += "<div class=\"tree-item file\"><a href=\"" + b + "firmware/" + f.file + "\" target=\"_blank\">" + f.file + "</a></div>";
     }
   }
   var h = "<div class=\"file-tree\">";
   h += "<div class=\"tree-item\"><span class=\"folder open\" onclick=\"this.classList.toggle(\\'open\\')\">keyboards/</span></div>";
   h += "<div class=\"indent\"><div class=\"tree-item\"><span class=\"folder open\" onclick=\"this.classList.toggle(\\'open\\')\">" + k + "/</span></div>";
-  h += "<div class=\"indent\"><div class=\"tree-item file\"><span class=\"icon\">\uD83D\uDCC4</span><a href=\"" + b + "meta.json\" target=\"_blank\">meta.json</a></div>" + ps;
+  h += "<div class=\"indent\"><div class=\"tree-item file\"><a href=\"" + b + "meta.json\" target=\"_blank\">meta.json</a></div>" + ps;
   h += "<div class=\"tree-item\"><span class=\"folder\" onclick=\"this.classList.toggle(\\'open\\')\">firmware/</span></div>";
   h += "<div class=\"indent\">" + fw + "</div></div></div></div>";
   return h;

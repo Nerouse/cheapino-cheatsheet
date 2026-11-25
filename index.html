@@ -15,7 +15,11 @@
 <!-- ═══ HEADER ═══ -->
 <header class="topbar">
   <div class="topbar-brand">
-    <span class="brand-icon">⌨</span>
+    <svg class="brand-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M6 16h.01M18 16h.01"/>
+      <path d="M10 16h4"/>
+    </svg>
     <div class="brand-text">
       <span class="brand-name">Cheapino</span>
       <span class="brand-sub">Keymap Reference</span>
@@ -32,9 +36,29 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <button class="action-btn" id="btn-files" title="Browse files">📁 Files</button>
-    <button class="action-btn" id="btn-docs" title="Documentation">📖 Docs</button>
-    <a class="action-btn" href="https://github.com/Nerouse/cheapino-cheatsheet" target="_blank" title="GitHub repo">🐙 Repo</a>
+    <button class="action-btn" id="btn-files" title="Browse files">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+      </svg>
+      Files
+    </button>
+    <button class="action-btn" id="btn-docs" title="Documentation">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="8" y1="13" x2="16" y2="13"/>
+        <line x1="8" y1="17" x2="16" y2="17"/>
+      </svg>
+      Docs
+    </button>
+    <a class="action-btn" href="https://github.com/Nerouse/cheapino-cheatsheet" target="_blank" title="GitHub repo">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+      Repo
+    </a>
   </div>
 </header>
 
@@ -53,13 +77,18 @@
 <aside id="drawer" class="drawer">
   <div class="drawer-head">
     <span id="drawer-title">Files</span>
-    <button id="drawer-close" class="icobtn" aria-label="Close drawer">&times;</button>
+    <button id="drawer-close" class="icobtn" aria-label="Close drawer">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
   </div>
   <div class="drawer-body" id="drawer-body"></div>
 </aside>
 
 <!-- ═══ FOOTER ═══ -->
-<footer class="footer">Cheapino ⌨ v2</footer>
+<footer class="footer">Cheapino v2</footer>
 
 <script src="js/app.js"></script>
 </body>
