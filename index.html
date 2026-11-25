@@ -9,84 +9,46 @@
 <body>
 <noscript><div style="padding:32px;text-align:center;color:#85858D;font-family:system-ui,sans-serif"><p>⚠ JavaScript is required for this app. Please enable it.</p></div></noscript>
 
-<!-- ─── Nav ─── -->
-<nav class="nav">
-  <div class="br"><span class="ac">⌨</span> CHEAPINO</div>
-  <div class="mi">
-    <a data-panel="keymap" href="#keymap" class="active">Keymap</a>
-    <a data-panel="configs" href="#configs">Configs</a>
-    <a data-panel="files" href="#files">Files</a>
-    <a data-panel="docs" href="#docs">Docs</a>
-    <a data-panel="repo" href="#repo">Repo</a>
+<!-- ═══ HEADER ═══ -->
+<header class="topbar">
+  <div class="topbar-l">
+    <span class="topbar-brand"><span class="ac">⌨</span> CHEAPINO</span>
   </div>
-</nav>
-
-<div class="wrap">
-
-<!-- ═══ KEYMAP PANEL ═══ -->
-<section id="keymap" class="panel active">
-  <div class="hero">
-    <div class="lbl">⌨ Keymap Reference</div>
-    <h1>CHEAPINO <span class="ac">KEYMAP</span></h1>
-    <div class="sub">34-key split keyboard — click a layer to see its layout</div>
+  <div class="topbar-c">
+    <select id="profile-select" class="profile-dropdown" aria-label="Select profile"></select>
+    <span id="profile-desc" class="profile-desc"></span>
   </div>
-  <div id="layer-tabs" class="layer-tabs"></div>
+  <div class="topbar-r">
+    <button class="icobtn" id="btn-files" title="Browse files">📁</button>
+    <button class="icobtn" id="btn-docs" title="Documentation">📖</button>
+    <a class="icobtn" href="https://github.com/Nerouse/cheapino-cheatsheet" target="_blank" title="GitHub repo">🐙</a>
+  </div>
+</header>
+
+<!-- ═══ LAYER TABS ═══ -->
+<div id="layer-tabs" class="layer-tabs"></div>
+
+<!-- ═══ KEYBOARD VISUAL ═══ -->
+<main class="keymap-area">
   <div id="keymap-visual">
     <div class="empty-state"><p>Loading keymap…</p></div>
   </div>
-</section>
+</main>
 
-<!-- ═══ CONFIGS PANEL ═══ -->
-<section id="configs" class="panel">
-  <div class="hero">
-    <div class="lbl">⚙ Configurations</div>
-    <h1>PROFILES &amp; <span class="ac">CONFIGS</span></h1>
-    <div class="sub">Select a profile to view its keymap</div>
-  </div>
-  <div id="configs-list"></div>
-</section>
+<!-- ═══ DRAWER OVERLAY ═══ -->
+<div id="drawer-overlay" class="drawer-overlay"></div>
 
-<!-- ═══ FILES PANEL ═══ -->
-<section id="files" class="panel">
-  <div class="hero">
-    <div class="lbl">📁 Files</div>
-    <h1>REPOSITORY <span class="ac">FILES</span></h1>
-    <div class="sub">Browse keyboard layouts, firmware, and metadata</div>
+<!-- ═══ DRAWER (Files / Docs) ═══ -->
+<aside id="drawer" class="drawer">
+  <div class="drawer-head">
+    <span id="drawer-title">Files</span>
+    <button id="drawer-close" class="icobtn">&times;</button>
   </div>
-  <div class="sec">
-    <div id="files-tree"></div>
-  </div>
-</section>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
 
-<!-- ═══ DOCS PANEL ═══ -->
-<section id="docs" class="panel">
-  <div class="hero">
-    <div class="lbl">📖 Documentation</div>
-    <h1>HOW TO USE <span class="ac">CHEAPINO</span></h1>
-    <div class="sub">Layer system, flashing guide, and layout loading</div>
-  </div>
-  <div id="docs-content"></div>
-</section>
-
-<!-- ═══ REPO PANEL ═══ -->
-<section id="repo" class="panel">
-  <div class="hero">
-    <div class="lbl">🔗 Repository</div>
-    <h1>GITHUB <span class="ac">REPO</span></h1>
-    <div class="sub">Source code, issues, and contributions</div>
-  </div>
-  <div class="repo-card">
-    <div class="repo-icon">🐙</div>
-    <h2>cheapino-cheatsheet</h2>
-    <p>Cheapino v2 interactive keymap reference — monochrome responsive cheat sheet</p>
-    <a class="btn" href="https://github.com/Nerouse/cheapino-cheatsheet" target="_blank">View on GitHub</a>
-    <div class="clone">git clone https://github.com/Nerouse/cheapino-cheatsheet.git</div>
-  </div>
-</section>
-
-</div>
-
-<footer class="footer">CHEAPINO ⌨ v2 · built with vanilla HTML/CSS/JS</footer>
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">CHEAPINO ⌨ v2</footer>
 
 <script src="js/app.js"></script>
 </body>
